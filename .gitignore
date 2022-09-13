@@ -1,0 +1,4 @@
+.DS_Store
+/inbox/node_modules
+/inbox-update/node_modules
+/inbox-update/.env
