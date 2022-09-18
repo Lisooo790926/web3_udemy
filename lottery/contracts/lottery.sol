@@ -3,7 +3,7 @@ pragma solidity ^0.4.17; // which compiler version you want to
 contract Lottery {
     address public manager;
     address[] public players;
-    bool isOpen;
+    bool public isOpen;
 
     function Lottery() public {
         // we could always know who is owner

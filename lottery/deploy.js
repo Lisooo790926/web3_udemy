@@ -21,7 +21,7 @@ const deploy = async () => {
     
     // get abi and deploy the contract
     const contract = await web3.eth.Contract(JSON.parse(interface))
-        .deploy({data: bytecode, arguments: ["this is initMsg"]})
+        .deploy({data: bytecode})
         .send({from: accounts[0], gas: '1000000'})
 
     console.log('contract deployed to', contract.options.address)
