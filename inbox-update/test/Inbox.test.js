@@ -3,7 +3,9 @@ const ganache = require('ganache-cli')
 const Web3 = require('Web3')
 
 // get the ABI and evm from compilper
-const { abi, evm } = require('../compile');
+const Inbox = require('../compile')('Inbox.sol').Inbox
+const abi = Inbox.abi
+const evm = Inbox.evm
 
 // use gnanche's provider (to define what kind of network connect to)
 const web3 = new Web3(ganache.provider())

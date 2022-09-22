@@ -4,14 +4,19 @@ const solc = require('solc');
 
 // it will available in IOS or Windows
 const inboxPath = path.resolve(__dirname, 'contracts', 'Inbox.sol');
-const source = fs.readFileSync(inboxPath, 'utf8');
+const testEventPath = path.resolve(__dirname, 'contracts', 'TestEvent.sol');
+const inboxSource = fs.readFileSync(inboxPath, 'utf8');
+const testEventSource = fs.readFileSync(testEventPath, 'utf8');
 
 // 
 const input = {
     language: 'Solidity',
     sources: {
         'Inbox.sol':{
-            content: source
+            content: inboxSource
+        }, 
+        'TestEvent.sol': {
+            content: testEventSource
         }
     },
     settings: {
@@ -23,9 +28,12 @@ const input = {
     }
 }
 
+const compileResult = JSON.parse(solc.compile(JSON.stringify(input)))
+
 // solc.compile
-module.exports = JSON.parse(solc.compile(JSON.stringify(input)))
-    .contracts['Inbox.sol'].Inbox
+module.exports = (contractName) => {
+    return compileResult.contracts[contractName]
+}
 
 /**
  * JSON.parse(solc.compile(JSON.stringify(input))).contracts
