@@ -29,7 +29,7 @@ contract MyToken is IERC20 {
     // allow others to spend the balance (A address allow -> multiple people to spend the balance)
     mapping(address => mapping (address => uint256)) _allowance;
 
-    constructor(string memory initName, string memory initSymbol, uint8 memory initDecimal, uint256 memory initSupply) {
+    constructor(string memory initName, string memory initSymbol, uint8 initDecimal, uint256 initSupply) {
         _name = initName;
         _symbol = initSymbol;
         _decimals = initDecimal;

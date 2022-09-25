@@ -11,14 +11,14 @@ const evm = TestEvent.evm
 const web3 = new Web3(ganache.provider())
 
 var accounts;
-var testEvent;
+var testEventContract;
 
 beforeEach(async () => {
     // get a list of account
     accounts = await web3.eth.getAccounts()
 
     // directly pass abi to contract
-    testEvent = await new web3.eth.Contract(abi)
+    testEventContract = await new web3.eth.Contract(abi)
         // assign bytecode method
         .deploy({ data: evm.bytecode.object}) // define the contract 
         .send({ from: accounts[0], gas: '1000000' })  // deploy the contract
@@ -27,13 +27,26 @@ beforeEach(async () => {
 describe('TestEvent', async() => {
 
     it('Test log result', async() => {
-        const utf8Encode = new TextEncoder();
-        const byteArr = utf8Encode.encode("abc");
-        testEvent.emitEvent(byteArr).send({from: accounts[0], value: 10000000}).then((result) => {
-            console.log(result);
-            var accountDetail = testEvent.at(accounts[0])
-            accountDetail.Deposit((error, result) => console.log(result))
-        });
+        // give the action when event has been triggered
+        testEventContract.events.Deposit((error, result) => {
+            console.log(result.event)
+            console.log(result.returnValues._id)
+            // bytes32 can transform back to ascii
+            console.log(Web3.utils.hexToAscii(result.returnValues._id))
+        })
+        testEventContract.events.Deposit2((error, result) => {
+            console.log(result)
+            console.log(result.returnValues._id)
+        })
+        testEventContract.methods.emitEvent(Web3.utils.asciiToHex("123")).send({from: accounts[0], value: 10000000})
+        testEventContract.methods.emitEvent2("456").send({from: accounts[0], value: 10000000})
+    })
+
+    it('Test subscribe function', async() => {
+        testEventContract.methods.emitEvent(Web3.utils.asciiToHex("123")).send({from: accounts[0], value: 10000000})
+        // const filter = web3.eth.filter({from:  topics: [web3.sha3(Depo)})
+        // testEventContract.queryFilter(filter).then((error, result) => console.log(result))
+        // to be continue
     })
 
 })
