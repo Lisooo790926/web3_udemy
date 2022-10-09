@@ -1,6 +1,5 @@
 .DS_Store
-/inbox/node_modules
-/inbox-update/node_modules
-/inbox-update/.env
-/lottery/node_modules
-/lottery/.env
+/*/.env
+/*/node_modules
+.env
+/node_modules
